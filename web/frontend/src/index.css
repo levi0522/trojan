@@ -1,0 +1,150 @@
+/* Hallmark · v2.0.0 — theme: console (graphite) · shape: app screen · posture: restrained · genre: modern-minimal · surface: light-step */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: 'Host Grotesk';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/static/fonts/host-grotesk-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Host Grotesk';
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+  src: url('/static/fonts/host-grotesk-500.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+  src: url('/static/fonts/atkinson-hyperlegible-mono-400.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Atkinson Hyperlegible Mono';
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+  src: url('/static/fonts/atkinson-hyperlegible-mono-700.woff2') format('woff2');
+}
+
+:root {
+  /* console · graphite (dark, default) */
+  --color-paper: oklch(17% 0.008 250);
+  --color-paper-2: oklch(21% 0.009 250);
+  --color-paper-3: oklch(13.5% 0.007 250);
+  --color-ink: oklch(95% 0.005 250);
+  --color-ink-2: oklch(83% 0.008 250);
+  --color-muted: oklch(71% 0.01 250);
+  --color-rule: oklch(31% 0.01 250);
+  --color-rule-2: oklch(42% 0.012 250);
+  --color-accent: oklch(82% 0.15 80);
+  --color-accent-ink: oklch(18% 0.04 75);
+  --color-accent-soft: oklch(29% 0.05 80);
+  --color-focus: oklch(82% 0.15 80);
+  --color-cool: oklch(77% 0.12 245);
+  --color-cool-soft: oklch(29% 0.05 245);
+  --color-ok: oklch(76% 0.15 150);
+  --color-ok-soft: oklch(24.5% 0.03 150);
+  --color-bad: oklch(70% 0.17 25);
+  --color-bad-soft: oklch(24.5% 0.035 25);
+  --font-display: 'Host Grotesk', ui-sans-serif, system-ui, 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  --font-body: var(--font-display);
+  --font-outlier: 'Atkinson Hyperlegible Mono', ui-monospace, 'SF Mono', Menlo, monospace;
+  --radius-card: 10px;
+  --radius-pill: 6px;
+  --rule-hair: 1px;
+  --dur-short: 120ms;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+:root[data-theme='light'] {
+  /* console · paper colourway */
+  --color-paper: oklch(98% 0.006 85);
+  --color-paper-2: oklch(96% 0.007 85);
+  --color-paper-3: oklch(92.5% 0.008 85);
+  --color-ink: oklch(19% 0.01 60);
+  --color-ink-2: oklch(30% 0.012 65);
+  --color-muted: oklch(46% 0.014 70);
+  --color-rule: oklch(87% 0.01 80);
+  --color-rule-2: oklch(76% 0.012 80);
+  --color-accent: oklch(54% 0.14 70);
+  --color-accent-ink: oklch(98% 0.006 85);
+  --color-accent-soft: oklch(90% 0.05 80);
+  --color-focus: oklch(54% 0.14 70);
+  --color-cool: oklch(52% 0.14 250);
+  --color-cool-soft: oklch(91% 0.045 250);
+  --color-ok: oklch(52% 0.14 150);
+  --color-ok-soft: oklch(92% 0.05 150);
+  --color-bad: oklch(54% 0.18 25);
+  --color-bad-soft: oklch(92% 0.05 25);
+}
+
+@layer base {
+  html,
+  body {
+    overflow-x: clip;
+  }
+  html {
+    scrollbar-color: var(--color-rule-2) var(--color-paper);
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: 16px;
+    line-height: 1.55;
+    font-variant-numeric: tabular-nums;
+    -webkit-font-smoothing: antialiased;
+  }
+  h1, h2, h3 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    letter-spacing: -0.03em;
+    text-wrap: balance;
+  }
+  *:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+  }
+  ::selection {
+    background: color-mix(in oklab, var(--color-accent) 30%, transparent);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* 仪器读数: 等宽数字, 仅用于测量值 */
+  .measured {
+    font-family: var(--font-outlier);
+    font-variant-numeric: tabular-nums slashed-zero;
+  }
+  /* 一组面板由同一表面切割而成: 1px 缝隙 */
+  .panels {
+    display: grid;
+    gap: var(--rule-hair);
+    background: var(--color-rule);
+    color: var(--color-ink);
+    border: var(--rule-hair) solid var(--color-rule);
+    border-radius: var(--radius-card);
+    overflow: hidden;
+  }
+  .panels > * {
+    background: var(--color-paper-2);
+    color: var(--color-ink);
+  }
+  /* 遮罩: 纸面 80% 不透明度 */
+  .overlay-dim {
+    background: color-mix(in oklab, var(--color-paper) 78%, transparent);
+  }
+}

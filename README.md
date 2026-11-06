@@ -35,7 +35,8 @@ source <(curl -sL https://git.io/trojan-install) --remove
 ```
 安装完后输入'trojan'可进入管理程序   
 浏览器访问 https://域名 可在线web页面管理trojan用户  
-前端页面源码地址: [trojan-web](https://github.com/Jrohy/trojan-web)
+数据库无需手动准备: 安装时会自动一键安装docker并用docker自建mariadb  
+前端页面源码已内置本仓库 `web/frontend` (React + Tailwind, shadcn 结构组件, Hallmark Console 主题), 重新构建: `cd web/frontend && npm install && npm run build`
 
 ### b. docker运行
 1. 安装mysql  

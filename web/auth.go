@@ -1,6 +1,7 @@
 package web
 
 import (
+	"crypto/sha256"
 	"fmt"
 	"github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
@@ -72,11 +73,15 @@ func jwtInit(timeout int) {
 				if user == nil {
 					return nil, jwt.ErrFailedAuthentication
 				}
-				password = user.EncryptPass
-			} else {
-				if password, err = core.GetValue(userID + "_pass"); err != nil {
-					return nil, err
+				// 同时支持明文密码与sha224加密串登录
+				plainEncrypt := fmt.Sprintf("%x", sha256.Sum224([]byte(pass)))
+				if user.EncryptPass != pass && user.EncryptPass != plainEncrypt {
+					return nil, jwt.ErrFailedAuthentication
 				}
+				return &loginVals, nil
+			}
+			if password, err = core.GetValue(userID + "_pass"); err != nil {
+				return nil, err
 			}
 			if password == pass {
 				return &loginVals, nil

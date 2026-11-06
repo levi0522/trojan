@@ -29,6 +29,13 @@ function upload() {
 
 cd $shell_path
 
+# 构建前端产物到 web/templates (需要本机有 node/npm)
+if [[ -d web/frontend/node_modules ]] || (cd web/frontend && npm install --no-audit --no-fund); then
+    (cd web/frontend && npm run build) || { echo "前端构建失败"; exit 1; }
+else
+    echo "前端依赖安装失败"; exit 1
+fi
+
 version=`git describe --tags $(git rev-list --tags --max-count=1)`
 now=`TZ=Asia/Shanghai date "+%Y%m%d-%H%M"`
 go_version=`go version|awk '{print $3,$4}'`

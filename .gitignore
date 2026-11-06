@@ -1,2 +1,5 @@
 .vscode
 .idea
+result
+web/templates
+web/frontend/node_modules
