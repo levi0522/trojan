@@ -1,8 +1,8 @@
 # trojan
-![](https://img.shields.io/github/v/release/Jrohy/trojan.svg) 
+![](https://img.shields.io/github/v/release/levi0522/trojan.svg) 
 ![](https://img.shields.io/docker/pulls/jrohy/trojan.svg)
-[![Go Report Card](https://goreportcard.com/badge/github.com/Jrohy/trojan)](https://goreportcard.com/report/github.com/Jrohy/trojan)
-[![Downloads](https://img.shields.io/github/downloads/Jrohy/trojan/total.svg)](https://img.shields.io/github/downloads/Jrohy/trojan/total.svg)
+[![Go Report Card](https://goreportcard.com/badge/github.com/levi0522/trojan)](https://goreportcard.com/report/github.com/levi0522/trojan)
+[![Downloads](https://img.shields.io/github/downloads/levi0522/trojan/total.svg)](https://img.shields.io/github/downloads/levi0522/trojan/total.svg)
 [![License](https://img.shields.io/badge/license-GPL%20V3-blue.svg?longCache=true)](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
@@ -27,10 +27,10 @@ trojan多用户管理部署程序
 ###  a. 一键脚本安装
 ```
 #安装/更新
-source <(curl -sL https://git.io/trojan-install)
+source <(curl -sL https://raw.githubusercontent.com/levi0522/trojan/master/install.sh)
 
 #卸载
-source <(curl -sL https://git.io/trojan-install) --remove
+source <(curl -sL https://raw.githubusercontent.com/levi0522/trojan/master/install.sh) --remove
 
 ```
 安装完后输入'trojan'可进入管理程序   
@@ -57,7 +57,7 @@ docker run -it -d --name trojan --net=host --restart=always --privileged jrohy/t
 
 设置自启动: `systemctl enable trojan-web`
 
-更新管理程序: `source <(curl -sL https://git.io/trojan-install)`
+更新管理程序: `source <(curl -sL https://raw.githubusercontent.com/levi0522/trojan/master/install.sh)`
 
 ## 运行截图
 ![avatar](asset/1.png)
