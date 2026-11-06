@@ -12,7 +12,7 @@ import (
 
 // UserMenu 用户管理菜单
 func UserMenu() {
-	fmt.Println()
+	util.PrintTitle("用户管理")
 	menu := []string{"新增用户", "删除用户", "限制流量", "清空流量", "设置限期", "取消限期"}
 	switch util.LoopInput("请选择: ", menu, false) {
 	case 1:

@@ -34,6 +34,26 @@ colorEcho(){
     echo -e "\033[${color}${@:2}\033[0m"
 }
 
+# 打印欢迎横幅
+printBanner(){
+    echo ""
+    colorEcho ${blue} "  ┌──────────────────────────────┐"
+    colorEcho ${blue} "  │     trojan 一键安装脚本      │"
+    colorEcho ${blue} "  └──────────────────────────────┘"
+    echo ""
+}
+
+# 步骤标题
+step(){
+    echo ""
+    colorEcho ${blue} "▶ $1"
+}
+
+# 成功提示
+ok(){
+    colorEcho ${green} "  ✔ $1"
+}
+
 #######get params#########
 while [[ $# > 0 ]];do
     key="$1"
@@ -147,22 +167,26 @@ installTrojan(){
         systemctl stop trojan-web >/dev/null 2>&1
         rm -f /usr/local/bin/trojan
     fi
+    step "下载管理程序"
     lastest_version=$(curl -H 'Cache-Control: no-cache' -s "$version_check" | grep 'tag_name' | cut -d\" -f4)
     echo "正在下载管理程序`colorEcho $blue $lastest_version`版本..."
     [[ $arch == x86_64 ]] && bin="trojan-linux-amd64" || bin="trojan-linux-arm64" 
     curl -L "$download_url/$lastest_version/$bin" -o /usr/local/bin/trojan
     chmod +x /usr/local/bin/trojan
+    ok "管理程序下载完成"
     if [[ ! -e /etc/systemd/system/trojan-web.service ]];then
         show_tip=1
         curl -L $service_url -o /etc/systemd/system/trojan-web.service
         systemctl daemon-reload
         systemctl enable trojan-web
+        ok "web服务已注册并设置开机自启"
     fi
     #命令补全环境变量
     [[ -z $(grep trojan ~/.${shell_way}rc) ]] && echo "source <(trojan completion ${shell_way})" >> ~/.${shell_way}rc
     source ~/.${shell_way}rc
     if [[ $update == 0 ]];then
-        colorEcho $green "安装trojan管理程序成功!\n"
+        echo ""
+        colorEcho $green "✔ 安装trojan管理程序成功!"
         echo -e "运行命令`colorEcho $blue trojan`可进行trojan管理\n"
         /usr/local/bin/trojan
     else
@@ -175,7 +199,7 @@ installTrojan(){
             /usr/local/bin/trojan upgrade config
         fi
         systemctl restart trojan-web
-        colorEcho $green "更新trojan管理程序成功!\n"
+        colorEcho $green "✔ 更新trojan管理程序成功!\n"
     fi
     setupCron
     [[ $show_tip == 1 ]] && echo "浏览器访问'`colorEcho $blue https://域名`'可在线trojan多用户管理"
@@ -184,9 +208,15 @@ installTrojan(){
 main(){
     [[ ${help} == 1 ]] && help && return
     [[ ${remove} == 1 ]] && removeTrojan && return
-    [[ $update == 0 ]] && echo "正在安装trojan管理程序.." || echo "正在更新trojan管理程序.."
+    printBanner
+    [[ $update == 0 ]] && step "开始安装trojan管理程序" || step "开始更新trojan管理程序"
     checkSys
-    [[ $update == 0 ]] && installDependent
+    ok "系统环境检查通过"
+    if [[ $update == 0 ]];then
+        step "安装系统依赖"
+        installDependent
+        ok "系统依赖安装完成"
+    fi
     installTrojan
 }
 

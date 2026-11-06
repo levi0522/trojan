@@ -9,7 +9,7 @@ import (
 
 // WebMenu web管理菜单
 func WebMenu() {
-	fmt.Println()
+	util.PrintTitle("web 管理")
 	menu := []string{"重置web管理员密码", "修改显示的域名(非申请证书)"}
 	switch util.LoopInput("请选择: ", menu, true) {
 	case 1:

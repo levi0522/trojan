@@ -7,6 +7,7 @@ import (
 	"reflect"
 	"regexp"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -76,6 +77,21 @@ func getChar(str string) string {
 	return string(char)
 }
 
+// PrintTitle 打印菜单标题
+func PrintTitle(title string) {
+	fmt.Println()
+	fmt.Println(Cyan("  ◆ " + title))
+	fmt.Println(Blue("  " + strings.Repeat("─", 28)))
+}
+
+// PrintBanner 打印程序欢迎横幅
+func PrintBanner() {
+	fmt.Println()
+	fmt.Println(Cyan("  ┌──────────────────────────────────┐"))
+	fmt.Println(Cyan("  │") + "      " + White("Trojan") + " 多用户管理程序" + "       " + Cyan("│"))
+	fmt.Println(Cyan("  └──────────────────────────────────┘"))
+}
+
 // LoopInput 循环输入选择, 或者直接回车退出
 func LoopInput(tip string, choices interface{}, singleRowPrint bool) int {
 	reflectValue := reflect.ValueOf(choices)
@@ -85,46 +101,38 @@ func LoopInput(tip string, choices interface{}, singleRowPrint bool) int {
 	}
 	length := reflectValue.Len()
 	if reflectValue.Type().String() == "[]string" {
-		if singleRowPrint {
-			for i := 0; i < length; i++ {
-				fmt.Printf("%d.%s\n\n", i+1, reflectValue.Index(i).Interface())
-			}
-		} else {
-			for i := 0; i < length; i++ {
-				if i%2 == 0 {
-					fmt.Printf("%d.%-15s\t", i+1, reflectValue.Index(i).Interface())
-				} else {
-					fmt.Printf("%d.%-15s\n\n", i+1, reflectValue.Index(i).Interface())
-				}
-			}
+		fmt.Println()
+		for i := 0; i < length; i++ {
+			fmt.Printf("  %s  %s\n", Yellow(fmt.Sprintf("[%d]", i+1)), reflectValue.Index(i).Interface())
 		}
+		fmt.Println()
 	}
 	for {
 		inputString := ""
 		if length < 10 {
-			inputString = getChar(tip)
+			inputString = getChar(Cyan("❯ ") + tip)
 		} else {
-			fmt.Print(tip)
+			fmt.Print(Cyan("❯ ") + tip)
 			_, _ = fmt.Scanln(&inputString)
 		}
 		if inputString == "" {
 			return -1
 		} else if !IsInteger(inputString) {
-			fmt.Println("输入有误,请重新输入")
+			fmt.Println(Red("  ✘ 输入有误, 请重新输入"))
 			continue
 		}
 		number, _ := strconv.Atoi(inputString)
 		if number <= length && number > 0 {
 			return number
 		}
-		fmt.Println("输入数字越界,请重新输入")
+		fmt.Println(Red("  ✘ 输入数字越界, 请重新输入"))
 	}
 }
 
 // Input 读取终端用户输入
 func Input(tip string, defaultValue string) string {
 	input := ""
-	fmt.Print(tip)
+	fmt.Print(Cyan("❯ ") + tip)
 	_, _ = fmt.Scanln(&input)
 	if input == "" && defaultValue != "" {
 		input = defaultValue

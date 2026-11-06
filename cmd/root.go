@@ -41,11 +41,9 @@ func mainMenu() {
 	check()
 exit:
 	for {
-		fmt.Println()
-		fmt.Println(util.Cyan("欢迎使用trojan管理程序"))
-		fmt.Println()
+		util.PrintBanner()
 		menuList := []string{"trojan管理", "用户管理", "安装管理", "web管理", "查看配置", "生成json"}
-		switch util.LoopInput("请选择: ", menuList, false) {
+		switch util.LoopInput("请选择(回车退出): ", menuList, true) {
 		case 1:
 			trojan.ControlMenu()
 		case 2:

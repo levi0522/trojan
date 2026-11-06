@@ -14,7 +14,7 @@ import (
 
 // ControlMenu Trojan控制菜单
 func ControlMenu() {
-	fmt.Println()
+	util.PrintTitle("trojan 管理")
 	tType := Type()
 	if tType == "trojan" {
 		tType = "trojan-go"
