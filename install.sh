@@ -169,9 +169,17 @@ installTrojan(){
     fi
     step "下载管理程序"
     lastest_version=$(curl -H 'Cache-Control: no-cache' -s "$version_check" | grep 'tag_name' | cut -d\" -f4)
+    if [[ -z $lastest_version ]];then
+        colorEcho $red "  ✘ 获取最新版本失败, 请确认仓库已发布Release: https://github.com/levi0522/trojan/releases"
+        exit 1
+    fi
     echo "正在下载管理程序`colorEcho $blue $lastest_version`版本..."
-    [[ $arch == x86_64 ]] && bin="trojan-linux-amd64" || bin="trojan-linux-arm64" 
-    curl -L "$download_url/$lastest_version/$bin" -o /usr/local/bin/trojan
+    [[ $arch == x86_64 ]] && bin="trojan-linux-amd64" || bin="trojan-linux-arm64"
+    if ! curl -fL "$download_url/$lastest_version/$bin" -o /usr/local/bin/trojan; then
+        colorEcho $red "  ✘ 下载管理程序失败, 请检查Release是否包含 $bin"
+        rm -f /usr/local/bin/trojan
+        exit 1
+    fi
     chmod +x /usr/local/bin/trojan
     ok "管理程序下载完成"
     if [[ ! -e /etc/systemd/system/trojan-web.service ]];then
