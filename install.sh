@@ -80,6 +80,23 @@ help(){
 }
 
 removeTrojan() {
+    #先停止并禁用服务, 否则删掉文件后进程仍在内存中运行, 开机还会自启
+    for svc in trojan trojan-web; do
+        systemctl stop $svc >/dev/null 2>&1
+        systemctl disable $svc >/dev/null 2>&1
+        rm -f /etc/systemd/system/multi-user.target.wants/$svc.service >/dev/null 2>&1
+    done
+    #兜底: 结束残留进程(trojan / trojan-go / 管理程序 web)
+    pkill -9 -f '/usr/bin/trojan/trojan' >/dev/null 2>&1
+    pkill -9 -f '/usr/local/bin/trojan' >/dev/null 2>&1
+    #docker 方式部署的容器
+    docker rm -f trojan >/dev/null 2>&1
+
+    #移除证书续期定时任务里的 trojan-web 条目
+    if crontab -l 2>/dev/null | grep -q trojan-web; then
+        crontab -l 2>/dev/null | grep -v trojan-web | crontab -
+    fi
+
     #移除trojan
     rm -rf /usr/bin/trojan >/dev/null 2>&1
     rm -rf /usr/local/etc/trojan >/dev/null 2>&1
@@ -91,6 +108,7 @@ removeTrojan() {
     rm -f /etc/systemd/system/trojan-web.service >/dev/null 2>&1
 
     systemctl daemon-reload
+    systemctl reset-failed >/dev/null 2>&1
 
     #移除trojan的专用db
     docker rm -f trojan-mysql trojan-mariadb >/dev/null 2>&1
