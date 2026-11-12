@@ -10,7 +10,7 @@ const DropdownMenuContent = React.forwardRef(({ className, sideOffset = 4, ...pr
     <DropdownMenuPrimitive.Content
       ref={ref}
       sideOffset={sideOffset}
-      className={cn('z-50 min-w-[9rem] overflow-hidden rounded-pill border border-rule2 bg-paper2 p-1 text-ink', className)}
+      className={cn('z-50 min-w-[10rem] overflow-hidden rounded-pill border border-rule2 bg-paper2/95 p-1 text-ink shadow-[var(--shadow-pop)] backdrop-blur-xl data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2', className)}
       {...props}
     />
   </DropdownMenuPrimitive.Portal>

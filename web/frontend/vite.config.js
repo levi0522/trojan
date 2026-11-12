@@ -14,6 +14,15 @@ export default defineConfig({
     outDir: '../templates',
     emptyOutDir: true,
     assetsDir: 'static',
+    rollupOptions: {
+      output: {
+        // 第三方库单独分包, 便于浏览器缓存
+        manualChunks: {
+          motion: ['motion/react', '@number-flow/react'],
+          radix: ['@radix-ui/react-dialog', '@radix-ui/react-dropdown-menu', '@radix-ui/react-select', '@radix-ui/react-switch', 'cmdk'],
+        },
+      },
+    },
   },
   server: {
     port: 5173,

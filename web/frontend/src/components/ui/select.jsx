@@ -11,7 +11,7 @@ const SelectTrigger = React.forwardRef(({ className, children, ...props }, ref) 
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      'flex h-9 w-full items-center justify-between rounded-pill border border-rule bg-paper3 px-3 py-1 text-sm text-ink focus:border-rule2 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:truncate',
+      'flex h-9 w-full items-center justify-between rounded-pill border border-rule bg-paper3 px-3 py-1 text-sm text-ink transition-[border-color,box-shadow] duration-150 hover:border-rule2 focus:border-cool/60 focus:outline-none focus:ring-4 focus:ring-cool/15 data-[state=open]:border-cool/60 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:truncate',
       className
     )}
     {...props}
@@ -30,7 +30,7 @@ const SelectContent = React.forwardRef(({ className, children, position = 'poppe
       ref={ref}
       position={position}
       className={cn(
-        'z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-pill border border-rule2 bg-paper2 text-ink',
+        'z-50 max-h-72 min-w-[8rem] overflow-hidden rounded-pill border border-rule2 bg-paper2 text-ink shadow-[var(--shadow-pop)] data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=top]:slide-in-from-bottom-2',
         position === 'popper' && 'data-[side=bottom]:translate-y-1',
         className
       )}

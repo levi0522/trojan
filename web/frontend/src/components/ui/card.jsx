@@ -1,10 +1,26 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { useSpotlight } from '@/components/fx'
 
-// 发线面板: 1px 边线 + 高一级表面, 无阴影
-const Card = React.forwardRef(({ className, ...props }, ref) => (
-  <div ref={ref} className={cn('rounded-card border border-rule bg-paper2', className)} {...props} />
-))
+// 面板: 发线边 + 柔和投影, 鼠标经过时边缘出现跟随光
+const Card = React.forwardRef(({ className, spotlight = true, onMouseMove, ...props }, ref) => {
+  const track = useSpotlight()
+  return (
+    <div
+      ref={ref}
+      onMouseMove={(e) => {
+        if (spotlight) track(e)
+        onMouseMove?.(e)
+      }}
+      className={cn(
+        'rounded-card border border-rule bg-paper2 shadow-[var(--shadow-card)] transition-colors',
+        spotlight && 'spotlight',
+        className
+      )}
+      {...props}
+    />
+  )
+})
 Card.displayName = 'Card'
 
 const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
@@ -13,7 +29,7 @@ const CardHeader = React.forwardRef(({ className, ...props }, ref) => (
 CardHeader.displayName = 'CardHeader'
 
 const CardTitle = React.forwardRef(({ className, ...props }, ref) => (
-  <h3 ref={ref} className={cn('text-base font-medium leading-none', className)} {...props} />
+  <h3 ref={ref} className={cn('flex items-center gap-2 text-[15px] font-medium leading-none', className)} {...props} />
 ))
 CardTitle.displayName = 'CardTitle'
 
